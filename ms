@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milne Aa Jao Na 🥺</title>
+    <style>
+        :root { --primary-pink: #ff4d6d; --soft-pink: #ffb3c1; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        
+        body { 
+            background: #fff5f7; 
+            height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            overflow: hidden; 
+            position: relative;
+        }
+
+        .heart {
+            position: absolute;
+            bottom: -50px;
+            color: var(--soft-pink);
+            font-size: 24px;
+            animation: floatUp 4s linear forwards;
+            z-index: 1;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+        }
+
+        .container {
+            background: white;
+            padding: 35px;
+            border-radius: 25px;
+            box-shadow: 0 10px 40px rgba(255, 77, 109, 0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            z-index: 10;
+            border: 2px solid #ffe5ec;
+        }
+
+        .emoji-box { font-size: 80px; margin-bottom: 20px; display: block; }
+        h1 { color: var(--primary-pink); font-size: 1.6rem; margin-bottom: 10px; font-weight: bold; }
+        p { color: #666; font-size: 1.1rem; margin-bottom: 30px; }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px; 
+            min-height: 60px;
+            align-items: center;
+        }
+
+        button {
+            padding: 12px 30px;
+            border-radius: 50px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: 0.3s;
+        }
+
+        .yes { background: var(--primary-pink); color: white; }
+        .no { background: #f0f0f0; color: #888; transition: 0.1s ease; }
+        .moving-no { position: fixed; z-index: 1000; }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
+    </audio>
+
+    <div class="container" id="mainCard">
+        <div id="content">
+            <div class="emoji-box" id="emojiContainer">🐱</div>
+            <h1 id="title">Milne a jao na 🥺</h1>
+            <p id="desc">Meko u ki bhut sari yaad a rhi h</p>
+
+            <div class="buttons" id="btnGroup">
+                <button class="yes" onclick="handleYes()">Yes</button>
+                <button class="no" id="noBtn" onclick="handleNo()">No</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let step = 1;
+        const noBtn = document.getElementById('noBtn');
+        const music = document.getElementById('bgMusic');
+
+        // Step 1: Click par content change hoga
+        function handleNo() {
+            if (step === 1) {
+                document.getElementById('emojiContainer').innerText = "😿";
+                document.getElementById('title').innerText = "Cute Pls mana jao na...";
+                document.getElementById('desc').innerText = "aise kya kar rahe ho 🌸";
+                
+                noBtn.classList.add('moving-no');
+                // Ab Mouseover par bhagega (Step 2)
+                noBtn.onmouseover = moveNoRandomly; 
+                step = 2;
+            }
+        }
+
+        function moveNoRandomly() {
+            const x = Math.random() * (window.innerWidth - 120);
+            const y = Math.random() * (window.innerHeight - 60);
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+        }
+
+        function handleYes() {
+            // Music Play On Click
+            music.volume = 0.5;
+            music.play();
+
+            const card = document.getElementById('mainCard');
+            card.innerHTML = `
+                <div class="emoji-box">😻</div>
+                <h1>Yayyy! ❤</h1>
+                <p>Jaldi se milne a jao! ✨</p>
+                <button class="yes" onclick="location.reload()" style="margin-top:10px; font-size:0.8rem; padding:8px 20px;">Back</button>
+            `;
+
+            for(let i=0; i<40; i++) setTimeout(createHeart, i*50);
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 4000);
+        }
+
+        setInterval(createHeart, 300);
+    </script>
+</body>
+</html>
